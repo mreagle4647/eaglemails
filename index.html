@@ -4,143 +4,150 @@
 <meta charset="UTF-8">
 <title>EagleMail – Temporary Email</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 <style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #0b1220;
-  color: #e5e7eb;
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#0f172a;
+  color:#e5e7eb;
 }
-header {
-  background: #020617;
-  padding: 15px;
-  text-align: center;
-  font-size: 22px;
-  font-weight: bold;
+header{
+  background:#020617;
+  padding:15px;
+  text-align:center;
 }
-.container {
-  max-width: 600px;
-  margin: auto;
-  padding: 20px;
+header h1{margin:0;color:#38bdf8}
+.container{
+  max-width:700px;
+  margin:auto;
+  padding:20px;
 }
-.email-box {
-  background: #020617;
-  padding: 15px;
-  border-radius: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  word-break: break-all;
+.box{
+  background:#020617;
+  padding:20px;
+  border-radius:10px;
+  margin-bottom:20px;
 }
-button {
-  background: #38bdf8;
-  border: none;
-  padding: 10px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
+button{
+  padding:10px 18px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  font-size:15px;
 }
-.timer {
-  margin-top: 10px;
-  color: #facc15;
+.btn-main{background:#22c55e}
+.btn-copy{background:#38bdf8;margin-left:10px}
+.email{
+  margin-top:15px;
+  font-size:18px;
+  word-break:break-all;
 }
-.inbox {
-  margin-top: 20px;
+.timer{margin-top:8px;color:#facc15}
+.msg{
+  background:#020617;
+  border-left:4px solid #38bdf8;
+  padding:10px;
+  border-radius:5px;
+  margin-bottom:10px;
 }
-.msg {
-  background: #020617;
-  border-left: 4px solid #38bdf8;
-  padding: 12px;
-  margin-bottom: 10px;
-  border-radius: 6px;
+footer{
+  text-align:center;
+  opacity:.6;
+  font-size:13px;
+  padding:10px;
 }
-.toast {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #020617;
-  padding: 10px 20px;
-  border-radius: 6px;
-  display: none;
-}
-footer {
-  text-align: center;
-  font-size: 13px;
-  opacity: 0.6;
-  padding: 10px;
+#toast{
+  display:none;
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#22c55e;
+  color:#000;
+  padding:10px 15px;
+  border-radius:6px;
 }
 </style>
 </head>
 
 <body>
 
-<header>🦅 EagleMail</header>
+<header>
+  <h1>🦅 EagleMail</h1>
+  <p>Free Temporary Email Service</p>
+</header>
 
 <div class="container">
 
-  <div class="email-box">
-    <span id="email">Loading…</span>
-    <button onclick="copyEmail()">Copy</button>
-  </div>
+<div class="box">
+  <button class="btn-main" onclick="generateEmail()">Generate New Email</button>
+  <button class="btn-copy" onclick="copyEmail()">Copy</button>
 
-  <button style="width:100%;margin-top:10px;" onclick="generateEmail()">Generate New Email</button>
-
+  <div class="email" id="email">Loading…</div>
   <div class="timer" id="timer"></div>
-
-  <div class="inbox" id="inbox"></div>
 </div>
 
-<div class="toast" id="toast">Copied!</div>
+<div class="box">
+  <h3>Inbox</h3>
+  <div id="inbox"></div>
+</div>
+
+</div>
 
 <footer>
-  Free Temporary Email Service • Auto-delete enabled
+© 2025 EagleMail
 </footer>
 
+<div id="toast">Copied!</div>
+
 <script>
-let time = 60;
-let interval;
+let timeLeft=600;
+let timer;
 
-function generateEmail() {
-  const mail = Math.random().toString(36).substring(2,10) + "@eaglemail.xyz";
-  document.getElementById("email").innerText = mail;
-  document.getElementById("inbox").innerHTML = "";
-  time = 60;
-  clearInterval(interval);
-  interval = setInterval(timerTick, 1000);
+function generateEmail(){
+  const r=Math.random().toString(36).substring(2,10);
+  document.getElementById("email").innerText=r+"@eaglemail.xyz";
+
+  document.getElementById("inbox").innerHTML=`
+    <div class="msg">
+      <strong>Security Code</strong><br>
+      Your OTP is ${Math.floor(100000+Math.random()*900000)}
+    </div>
+    <div class="msg">
+      <strong>Welcome</strong><br>
+      Thanks for using EagleMail.
+    </div>
+  `;
+
+  clearInterval(timer);
+  timeLeft=600;
+  timer=setInterval(updateTimer,1000);
+  updateTimer();
 }
 
-function timerTick() {
-  document.getElementById("timer").innerText =
-    "Expires in 00:" + (time < 10 ? "0" : "") + time;
-
-  if (time === 45) addMsg("Welcome", "Thanks for using EagleMail.");
-  if (time === 30) addMsg("Security Code", "Your OTP is 482193");
-  if (time === 15) addMsg("Newsletter", "Confirm your subscription.");
-
-  if (time <= 0) {
-    clearInterval(interval);
-    document.getElementById("timer").innerText = "Inbox expired.";
+function updateTimer(){
+  if(timeLeft<=0){
+    document.getElementById("timer").innerText="Inbox expired";
+    clearInterval(timer);
+    return;
   }
-  time--;
+  let m=Math.floor(timeLeft/60);
+  let s=timeLeft%60;
+  document.getElementById("timer").innerText=
+    "Expires in "+m+":"+(s<10?"0":"")+s;
+  timeLeft--;
 }
 
-function addMsg(subject, body) {
-  const d = document.createElement("div");
-  d.className = "msg";
-  d.innerHTML = "<strong>" + subject + "</strong><br>" + body;
-  document.getElementById("inbox").prepend(d);
+function copyEmail(){
+  navigator.clipboard.writeText(
+    document.getElementById("email").innerText
+  );
+  const t=document.getElementById("toast");
+  t.style.display="block";
+  setTimeout(()=>t.style.display="none",1500);
 }
 
-function copyEmail() {
-  navigator.clipboard.writeText(document.getElementById("email").innerText);
-  const t = document.getElementById("toast");
-  t.style.display = "block";
-  setTimeout(() => t.style.display = "none", 1500);
-}
-
-window.onload = generateEmail;
+window.onload=generateEmail;
 </script>
 
 </body>
