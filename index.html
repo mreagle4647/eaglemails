@@ -2,98 +2,67 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>EagleMail – Temporary Email</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EagleMail - Free Temporary Email</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: #e5e7eb;
-      text-align: center;
-      padding: 40px;
-    }
-    .box {
-      background: #020617;
-      padding: 30px;
-      border-radius: 10px;
-      max-width: 500px;
-      margin: auto;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
-    }
-    button {
-      padding: 12px 20px;
-      font-size: 16px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      background: #22c55e;
-      color: #000;
-      margin-top: 20px;
-    }
-    .email {
-      margin-top: 20px;
-      font-size: 18px;
-      color: #38bdf8;
-      word-break: break-all;
-    }
+    body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+    #email { font-weight: bold; font-size: 1.2em; margin: 10px 0; }
+    #timer { margin: 10px 0; color: red; }
+    #inbox { margin-top: 20px; text-align: left; max-width: 400px; margin-left: auto; margin-right: auto; }
+    .msg { border: 1px solid #ccc; padding: 10px; margin-bottom: 5px; border-radius: 5px; }
+    button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
   </style>
 </head>
 <body>
+  <h1>🦅 EagleMail</h1>
+  <p>Free Temporary Email Service</p>
 
-  <div class="box">
-    <h1>🦅 EagleMail</h1>
-    <p>Free Temporary Email Service</p>
+  <button onclick="generateEmail()">Generate Email</button>
+  <p id="email">u74fwpvy@eaglemail.xyz</p>
+  <p id="timer">Expires in 10:00</p>
 
-    <button onclick="generateEmail()">Generate Email</button>
-
-    <div class="email" id="email"></div>
-  </div>
-
-  <script>
-    function generateEmail() {
-      const random = Math.random().toString(36).substring(2, 10);
-      document.getElementById("email").innerText =
-        random + "@eaglemail.xyz";
-    }
-  </script>
-  <script>
-let timeLeft = 600;
-let timerInterval;
-
-function generateEmail() {
-  const random = Math.random().toString(36).substring(2, 10);
-  document.getElementById("email").innerText = random + "@eaglemail.demo";
-
-  document.getElementById("inbox").innerHTML = `
+  <div id="inbox">
     <div class="msg">
       <strong>Welcome to EagleMail</strong><br>
       This is a demo inbox message.
     </div>
-    <div class="msg">
-      <strong>Test Email</strong><br>
-      Your temporary email is ready.
-    </div>
-  `;
+  </div>
 
-  timeLeft = 600;
-  clearInterval(timerInterval);
-  timerInterval = setInterval(updateTimer, 1000);
-}
+  <script>
+    let timeLeft = 600;
+    let timerInterval;
 
-function updateTimer() {
-  if (timeLeft <= 0) {
-    clearInterval(timerInterval);
-    document.getElementById("timer").innerText = "Inbox expired.";
-    return;
-  }
-  const minutes = Math.floor(timeLeft / 60);
-  const seconds = timeLeft % 60;
-  document.getElementById("timer").innerText =
-    "Expires in " + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
-  timeLeft--;
-}
-</script>
+    function generateEmail() {
+      const random = Math.random().toString(36).substring(2, 10);
+      document.getElementById("email").innerText = random + "@eaglemail.xyz";
 
+      document.getElementById("inbox").innerHTML = `
+        <div class="msg">
+          <strong>Welcome to EagleMail</strong><br>
+          Your temporary email is ready.
+        </div>
+        <div class="msg">
+          <strong>Test Email</strong><br>
+          This is a sample message.
+        </div>
+      `;
 
+      timeLeft = 600;
+      clearInterval(timerInterval);
+      timerInterval = setInterval(updateTimer, 1000);
+    }
+
+    function updateTimer() {
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        document.getElementById("timer").innerText = "Inbox expired.";
+        return;
+      }
+      const minutes = Math.floor(timeLeft / 60);
+      const seconds = timeLeft % 60;
+      document.getElementById("timer").innerText =
+        "Expires in " + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+      timeLeft--;
+    }
+  </script>
 </body>
 </html>
