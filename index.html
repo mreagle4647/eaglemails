@@ -1,7 +1,80 @@
 <!DOCTYPE html>
-<html>
-<body style="background:black;color:white;text-align:center;">
-<h1>IF YOU SEE THIS — ROOT IS WORKING</h1>
-<button onclick="alert('JS WORKS')">CLICK ME</button>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>EagleMail – Temporary Email</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{margin:0;font-family:Arial;background:#0f172a;color:#e5e7eb}
+header{background:#020617;padding:15px;text-align:center}
+h1{margin:0;color:#38bdf8}
+.container{max-width:720px;margin:auto;padding:20px}
+.box{background:#020617;padding:20px;border-radius:10px;margin-bottom:20px}
+button{padding:10px 18px;border:none;border-radius:6px;cursor:pointer;font-size:15px}
+.gen{background:#22c55e}
+.copy{background:#38bdf8;margin-left:10px}
+.email{margin-top:15px;font-size:18px;word-break:break-all}
+.timer{margin-top:8px;color:#facc15}
+.msg{background:#020617;border-left:4px solid #38bdf8;padding:10px;border-radius:5px;margin-bottom:10px}
+footer{text-align:center;opacity:.6;font-size:13px;padding:10px}
+#toast{display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#22c55e;color:#000;padding:10px 15px;border-radius:6px}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>🦅 EagleMail</h1>
+<p>Free Temporary Email Service</p>
+</header>
+
+<div class="container">
+
+<div class="box">
+<button class="gen" onclick="generate()">Generate New Email</button>
+<button class="copy" onclick="copy()">Copy</button>
+<div class="email" id="email">Loading…</div>
+<div class="timer" id="timer"></div>
+</div>
+
+<div class="box">
+<h3>Inbox</h3>
+<div id="inbox"></div>
+</div>
+
+</div>
+
+<footer>© 2025 EagleMail</footer>
+<div id="toast">Copied!</div>
+
+<script>
+let time=600, t;
+
+function generate(){
+  const id=Math.random().toString(36).slice(2,10);
+  document.getElementById("email").innerText=id+"@eaglemail.xyz";
+  document.getElementById("inbox").innerHTML=
+  `<div class="msg"><b>Security Code</b><br>Your OTP is ${Math.floor(100000+Math.random()*900000)}</div>
+   <div class="msg"><b>Welcome</b><br>Thanks for using EagleMail.</div>`;
+  clearInterval(t); time=600;
+  t=setInterval(run,1000); run();
+}
+
+function run(){
+  if(time<=0){document.getElementById("timer").innerText="Inbox expired";clearInterval(t);return;}
+  let m=Math.floor(time/60),s=time%60;
+  document.getElementById("timer").innerText=`Expires in ${m}:${s<10?"0":""}${s}`;
+  time--;
+}
+
+function copy(){
+  navigator.clipboard.writeText(document.getElementById("email").innerText);
+  let x=document.getElementById("toast");
+  x.style.display="block";setTimeout(()=>x.style.display="none",1200);
+}
+
+window.onload=generate;
+</script>
+
 </body>
 </html>
