@@ -81,10 +81,67 @@ footer {
 <div class="container">
 
   <div class="email-box">
-    <span id="email">Click Generate</span>
+    <span id="email">Loading…</span>
     <button onclick="copyEmail()">Copy</button>
   </div>
 
   <button style="width:100%;margin-top:10px;" onclick="generateEmail()">Generate New Email</button>
 
   <div class="timer" id="timer"></div>
+
+  <div class="inbox" id="inbox"></div>
+</div>
+
+<div class="toast" id="toast">Copied!</div>
+
+<footer>
+  Free Temporary Email Service • Auto-delete enabled
+</footer>
+
+<script>
+let time = 60;
+let interval;
+
+function generateEmail() {
+  const mail = Math.random().toString(36).substring(2,10) + "@eaglemail.xyz";
+  document.getElementById("email").innerText = mail;
+  document.getElementById("inbox").innerHTML = "";
+  time = 60;
+  clearInterval(interval);
+  interval = setInterval(timerTick, 1000);
+}
+
+function timerTick() {
+  document.getElementById("timer").innerText =
+    "Expires in 00:" + (time < 10 ? "0" : "") + time;
+
+  if (time === 45) addMsg("Welcome", "Thanks for using EagleMail.");
+  if (time === 30) addMsg("Security Code", "Your OTP is 482193");
+  if (time === 15) addMsg("Newsletter", "Confirm your subscription.");
+
+  if (time <= 0) {
+    clearInterval(interval);
+    document.getElementById("timer").innerText = "Inbox expired.";
+  }
+  time--;
+}
+
+function addMsg(subject, body) {
+  const d = document.createElement("div");
+  d.className = "msg";
+  d.innerHTML = "<strong>" + subject + "</strong><br>" + body;
+  document.getElementById("inbox").prepend(d);
+}
+
+function copyEmail() {
+  navigator.clipboard.writeText(document.getElementById("email").innerText);
+  const t = document.getElementById("toast");
+  t.style.display = "block";
+  setTimeout(() => t.style.display = "none", 1500);
+}
+
+window.onload = generateEmail;
+</script>
+
+</body>
+</html>
