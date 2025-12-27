@@ -56,6 +56,44 @@
         random + "@eaglemail.xyz";
     }
   </script>
+  <script>
+let timeLeft = 600;
+let timerInterval;
+
+function generateEmail() {
+  const random = Math.random().toString(36).substring(2, 10);
+  document.getElementById("email").innerText = random + "@eaglemail.demo";
+
+  document.getElementById("inbox").innerHTML = `
+    <div class="msg">
+      <strong>Welcome to EagleMail</strong><br>
+      This is a demo inbox message.
+    </div>
+    <div class="msg">
+      <strong>Test Email</strong><br>
+      Your temporary email is ready.
+    </div>
+  `;
+
+  timeLeft = 600;
+  clearInterval(timerInterval);
+  timerInterval = setInterval(updateTimer, 1000);
+}
+
+function updateTimer() {
+  if (timeLeft <= 0) {
+    clearInterval(timerInterval);
+    document.getElementById("timer").innerText = "Inbox expired.";
+    return;
+  }
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
+  document.getElementById("timer").innerText =
+    "Expires in " + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+  timeLeft--;
+}
+</script>
+
 
 </body>
 </html>
