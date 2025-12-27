@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EagleMail – Temporary Email</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #e5e7eb;
+      text-align: center;
+      padding: 40px;
+    }
+    .box {
+      background: #020617;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+    button {
+      padding: 12px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background: #22c55e;
+      color: #000;
+      margin-top: 20px;
+    }
+    .email {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #38bdf8;
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="box">
+    <h1>🦅 EagleMail</h1>
+    <p>Free Temporary Email Service</p>
+
+    <button onclick="generateEmail()">Generate Email</button>
+
+    <div class="email" id="email"></div>
+  </div>
+
+  <script>
+    function generateEmail() {
+      const random = Math.random().toString(36).substring(2, 10);
+      document.getElementById("email").innerText =
+        random + "@eaglemail.xyz";
+    }
+  </script>
+
+</body>
+</html>
