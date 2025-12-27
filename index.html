@@ -1,37 +1,90 @@
-<script>
-let timeLeft = 600;
-let timerInterval;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>EagleMail – Temporary Email</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-function generateEmail() {
-  const random = Math.random().toString(36).substring(2, 10);
-  document.getElementById("email").innerText = random + "@eaglemail.demo";
-
-  document.getElementById("inbox").innerHTML = `
-    <div class="msg">
-      <strong>Welcome to EagleMail</strong><br>
-      This is a demo inbox message.
-    </div>
-    <div class="msg">
-      <strong>Test Email</strong><br>
-      Your temporary email is ready.
-    </div>
-  `;
-
-  timeLeft = 600;
-  clearInterval(timerInterval);
-  timerInterval = setInterval(updateTimer, 1000);
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0b1220;
+  color: #e5e7eb;
 }
-
-function updateTimer() {
-  if (timeLeft <= 0) {
-    clearInterval(timerInterval);
-    document.getElementById("timer").innerText = "Inbox expired.";
-    return;
-  }
-  const minutes = Math.floor(timeLeft / 60);
-  const seconds = timeLeft % 60;
-  document.getElementById("timer").innerText =
-    "Expires in " + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
-  timeLeft--;
+header {
+  background: #020617;
+  padding: 15px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: bold;
 }
-</script>
+.container {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+}
+.email-box {
+  background: #020617;
+  padding: 15px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  word-break: break-all;
+}
+button {
+  background: #38bdf8;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.timer {
+  margin-top: 10px;
+  color: #facc15;
+}
+.inbox {
+  margin-top: 20px;
+}
+.msg {
+  background: #020617;
+  border-left: 4px solid #38bdf8;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+}
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #020617;
+  padding: 10px 20px;
+  border-radius: 6px;
+  display: none;
+}
+footer {
+  text-align: center;
+  font-size: 13px;
+  opacity: 0.6;
+  padding: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<header>🦅 EagleMail</header>
+
+<div class="container">
+
+  <div class="email-box">
+    <span id="email">Click Generate</span>
+    <button onclick="copyEmail()">Copy</button>
+  </div>
+
+  <button style="width:100%;margin-top:10px;" onclick="generateEmail()">Generate New Email</button>
+
+  <div class="timer" id="timer"></div>
